@@ -2,9 +2,10 @@
 
 ## A Node class with an accessible but immutable value
 class Node:
-  def __init__(self, value, next_node=None):
+  def __init__(self, value, prev_node=None, next_node=None):
     self.value = value
     self.next_node = next_node
+    self.prev_node = prev_node
     
   ## Define your getters - get_value and get_next_node methods below:
   def get_value(self):
@@ -13,9 +14,15 @@ class Node:
   def get_next_node(self):
     return self.next_node
   
+  def get_prev_node(self):
+    return self.prev_node
+  
   ## Define your set_next_node method to allow updating the link of the node after creation of instance:
   def set_next_node(self, next_node):
     self.next_node = next_node
+
+  def set_prev_node(self, prev_node):
+    self.prev_node = prev_node
 
 
 yacko = Node("likes to yak")
@@ -185,6 +192,136 @@ def nth_last_node(linked_list, n):
   return current_node
 
 
+# POINTERS AT DIFFERENT SPEEDS
+## The first pointer takes two steps through the linked list for every one step that the second takes, so it iterates twice as fast
+
+def find_middle(linked_list):
+  fast = linked_list.head_node
+  slow = linked_list.head_node
+  while fast:
+    fast = fast.get_next_node()
+    if fast:
+      fast = fast.get_next_node()
+      slow = slow.get_next_node()
+  return slow
+
+## Another equally valid solution is to move the fast pointer once with each loop iteration but 
+## only move the slow pointer every-other iteration:
+def find_middle_alt(linked_list):
+  count = 0
+  fast = linked_list.head_node
+  slow = linked_list.head_node
+  while fast:
+    fast = fast.get_next_node()
+    if count % 2 != 0:
+      slow = slow.get_next_node()
+    count += 1
+  return slow
+
+
+# DOUBLY LINKED LIST
+## Doubly linked list added tail_node property on top of head_node for the list.
+class DoublyLinkedList:
+  def __init__(self):
+    self.head_node = None
+    self.tail_node = None
+
+  def add_to_head(self, new_value):
+    new_head = Node(new_value)
+    current_head = self.head_node
+
+    ## the list isnt empty
+    if current_head != None:
+      current_head.set_prev_node(new_head)
+      new_head.set_next_node(current_head)
+
+    ## set the list head node to new_head
+    self.head_node = new_head
+
+    if self.tail_node == None:
+      self.tail_node = new_head
+
+  def add_to_tail(self, new_value):
+    new_tail = Node(new_value)
+    current_tail = self.tail_node
+
+    if current_tail != None:
+      current_tail.set_next_node(new_tail)
+      new_tail.set_prev_node(current_tail)
+
+    self.tail_node = new_tail
+
+    if self.head_node == None:
+      self.head_node = new_tail
+
+  def remove_head(self):
+      removed_head = self.head_node
+
+      if removed_head == None:
+        return None
+
+      self.head_node = removed_head.get_next_node()
+
+      if self.head_node != None:
+        self.head_node.set_prev_node(None)
+
+      if removed_head == self.tail_node:
+        self.remove_tail()
+
+      return removed_head.get_value()
+  
+  def remove_tail(self):
+    removed_tail = self.tail_node
+
+    if removed_tail == None:
+      return None
+
+    self.tail_node = removed_tail.get_prev_node()
+
+    if self.tail_node != None:
+      self.tail_node.set_next_node(None)
+
+    if removed_tail == self.head_node:
+      self.remove_head()
+
+    return removed_tail.get_value()
+
+  def remove_by_value(self, value_to_remove):
+    node_to_remove = None
+    current_node = self.head_node
+
+    while current_node != None:
+      if current_node.get_value() == value_to_remove:
+        node_to_remove = current_node
+        break
+
+      current_node = current_node.get_next_node()
+
+    if node_to_remove == None:
+      return None
+      
+    if node_to_remove == self.head_node:
+      self.remove_head()
+    elif node_to_remove == self.tail_node:
+      self.remove_tail()
+    else:
+      next_node = node_to_remove.get_next_node()
+      prev_node = node_to_remove.get_prev_node()
+      next_node.set_prev_node(prev_node)
+      prev_node.set_next_node(next_node)
+    
+    return node_to_remove
+
+  def stringify_list(self):
+    string_list = ""
+    current_node = self.head_node
+    while current_node:
+      if current_node.get_value() != None:
+        string_list += str(current_node.get_value()) + "\n"
+      current_node = current_node.get_next_node()
+    return string_list
+  
+
 
 # TEST THE CODES
 ll = LinkedList(5)
@@ -213,3 +350,32 @@ test_list = generate_test_linked_list()
 print(test_list.stringify_list())
 nth_last = nth_last_node(test_list, 4)
 print(nth_last.value)
+
+def generate_test_linked_list(length):
+  linked_list = LinkedList()
+  for i in range(length, 0, -1):
+    linked_list.insert_beginning(i)
+  return linked_list
+
+test_list = generate_test_linked_list(7)
+print(test_list.stringify_list())
+middle_node = find_middle(test_list)
+print(middle_node.value)
+
+subway = DoublyLinkedList()
+subway.add_to_head('Times Square')
+subway.add_to_head('Grand Central')
+subway.add_to_head('Central Park')
+print(subway.stringify_list())
+
+subway.add_to_tail('Penn Station')
+subway.add_to_tail('Wall Street')
+subway.add_to_tail('Brooklyn Bridge')
+print(subway.stringify_list())
+
+subway.remove_head()
+subway.remove_tail()
+print(subway.stringify_list())
+
+subway.remove_by_value('Times Square')
+print(subway.stringify_list())
