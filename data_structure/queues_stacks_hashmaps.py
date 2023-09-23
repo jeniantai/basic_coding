@@ -106,119 +106,149 @@ class Stack:
     print("{0} Stack: {1}".format(self.get_name(), print_list))
 
 
-print("\nLet's play Towers of Hanoi!!")
-# The game follows three rules:
-# Only one disk can be moved at a time.
-# Each move consists of taking the upper disk from one of the stacks and placing it on top of another stack or on an empty rod.
-# No disk may be placed on top of a smaller disk.
+# print("\nLet's play Towers of Hanoi!!")
+# # The game follows three rules:
+# # Only one disk can be moved at a time.
+# # Each move consists of taking the upper disk from one of the stacks and placing it on top of another stack or on an empty rod.
+# # No disk may be placed on top of a smaller disk.
 
-#Create the Stacks
-left_stack = Stack('Left')
-middle_stack = Stack('Middle')
-right_stack = Stack('Right')
+# #Create the Stacks
+# left_stack = Stack('Left')
+# middle_stack = Stack('Middle')
+# right_stack = Stack('Right')
 
-stacks = [left_stack, middle_stack, right_stack]
+# stacks = [left_stack, middle_stack, right_stack]
 
-#Set up the Game
-num_disks = int(input("\nHow many disks do you want to play with?\n"))
+# #Set up the Game
+# num_disks = int(input("\nHow many disks do you want to play with?\n"))
 
-while num_disks<3:
-  num_disks = int(input('Enter a number greater than or equal to 3\n'))
+# while num_disks<3:
+#   num_disks = int(input('Enter a number greater than or equal to 3\n'))
 
-for disk in range(num_disks, 0, -1):
-  left_stack.push(disk)
+# for disk in range(num_disks, 0, -1):
+#   left_stack.push(disk)
 
-num_optimal_moves = 2**num_disks-1
-print("\nThe fastest you can solve this game is in {0} moves".format(num_optimal_moves))
+# num_optimal_moves = 2**num_disks-1
+# print("\nThe fastest you can solve this game is in {0} moves".format(num_optimal_moves))
 
-#Get User Input
-def get_input():
-  choices = [stack.get_name()[0] for stack in stacks]
-  while True:
-    for i in range(len(stacks)):
-      name = stacks[i].get_name()
-      letter = choices[i]
-      print("Enter {0} for {1}".format(letter, name))
-    user_input = input('')
-    if user_input in choices:
-      for i in range(len(stacks)):
-        return stacks[choices.index(user_input)]
+# #Get User Input
+# def get_input():
+#   choices = [stack.get_name()[0] for stack in stacks]
+#   while True:
+#     for i in range(len(stacks)):
+#       name = stacks[i].get_name()
+#       letter = choices[i]
+#       print("Enter {0} for {1}".format(letter, name))
+#     user_input = input('')
+#     if user_input in choices:
+#       for i in range(len(stacks)):
+#         return stacks[choices.index(user_input)]
 
-#Play the Game
-num_user_moves = 0
-while right_stack.get_size() != num_disks:
-  print("\n\n\n...Current Stacks...")
-  for stack in stacks:
-    stack.print_items()
-  while True:
-    print("\nWhich stack do you want to move from?\n")
-    from_stack = get_input()
-    print("\nWhich stack do you want to move to?\n")
-    to_stack = get_input()
+# #Play the Game
+# num_user_moves = 0
+# while right_stack.get_size() != num_disks:
+#   print("\n\n\n...Current Stacks...")
+#   for stack in stacks:
+#     stack.print_items()
+#   while True:
+#     print("\nWhich stack do you want to move from?\n")
+#     from_stack = get_input()
+#     print("\nWhich stack do you want to move to?\n")
+#     to_stack = get_input()
 
-    if from_stack.is_empty():
-      print("\n\nInvalid Move from empty stack. Try Again")
-    elif to_stack.is_empty() or from_stack.peek() < to_stack.peek():
-      disk = from_stack.pop()
-      to_stack.push(disk)
-      num_user_moves += 1
-      break
-    else:
-      #if the user tries to move a larger disk onto a smaller disk.
-      print("\n\nInvalid Move of larger disk to smaller. Try Again")
+#     if from_stack.is_empty():
+#       print("\n\nInvalid Move from empty stack. Try Again")
+#     elif to_stack.is_empty() or from_stack.peek() < to_stack.peek():
+#       disk = from_stack.pop()
+#       to_stack.push(disk)
+#       num_user_moves += 1
+#       break
+#     else:
+#       #if the user tries to move a larger disk onto a smaller disk.
+#       print("\n\nInvalid Move of larger disk to smaller. Try Again")
 
-  print("\n\nYou completed the game in {0} moves, and the optimal number of moves is {1}".format(num_user_moves, num_optimal_moves))
+#   print("\n\nYou completed the game in {0} moves, and the optimal number of moves is {1}".format(num_user_moves, num_optimal_moves))
     
 
-# TEST THE CODE
-print("Creating a deli line with up to 10 orders...\n------------")
-deli_line = Queue(10)
-print("Adding orders to our deli line...\n------------")
-deli_line.enqueue("egg and cheese on a roll")
-deli_line.enqueue("bacon, egg, and cheese on a roll")
-deli_line.enqueue("toasted sesame bagel with butter and jelly")
-deli_line.enqueue("toasted roll with butter")
-deli_line.enqueue("bacon, egg, and cheese on a plain bagel")
-deli_line.enqueue("two fried eggs with home fries and ketchup")
-deli_line.enqueue("egg and cheese on a roll with jalapeos")
-deli_line.enqueue("plain bagel with plain cream cheese")
-deli_line.enqueue("blueberry muffin toasted with butter")
-deli_line.enqueue("bacon, egg, and cheese on a roll")
-deli_line.enqueue("western omelet with home fries")
-# ------------------------ #
-print("------------\nOur first order will be " + deli_line.peek())
-print("------------\nNow serving...\n------------")
-deli_line.dequeue()
-deli_line.dequeue()
-deli_line.dequeue()
-deli_line.dequeue()
-deli_line.dequeue()
-deli_line.dequeue()
-deli_line.dequeue()
-deli_line.dequeue()
-deli_line.dequeue()
-deli_line.dequeue()
-# ------------------------ #
-# Uncomment the line below:
-deli_line.dequeue()
-# ------------------------ #
+# HASHMAP - PROBING
+# simulate an array by creating a list and keeping track of the size of the list with an additional integer variable.
+class HashMap:
+  def __init__(self, array_size):
+    self.array_size = array_size
+    self.array = [None for i in range(self.array_size)]
 
+  def hash(self, key, count_collisions=0):
+    # turn key into a list of bytes
+    key_bytes = key.encode()
+    # turn the bytes object into a hash code
+    hash_code = sum(key_bytes)
+    # uses the number of collisions to determine the hash code
+    return hash_code + count_collisions
+  
+  # a compressor ensures that the index is always within the bounds of the array
+  def compressor(self, hash_code):
+    return hash_code%self.array_size
+  
+  # define the setter
+  def assign(self, key, value):
+    array_index = self.compressor(self.hash(key))
+    current_array_value = self.array[array_index]
 
-pizza_stack = Stack(6)
-# Adding pizzas as they are ready until we have 
-pizza_stack.push("pizza #1")
-pizza_stack.push("pizza #2")
-pizza_stack.push("pizza #3")
-pizza_stack.push("pizza #4")
-pizza_stack.push("pizza #5")
-pizza_stack.push("pizza #6")
-pizza_stack.push("pizza #7")
-# Delivering pizzas from the top of the stack down
-print("The first pizza to deliver is " + pizza_stack.peek())
-pizza_stack.pop()
-pizza_stack.pop()
-pizza_stack.pop()
-pizza_stack.pop()
-pizza_stack.pop()
-pizza_stack.pop()
-pizza_stack.pop()
+    if current_array_value is None:
+      self.array[array_index] = [key, value]
+      return
+
+    # overwrite if key match
+    # current_array_value holds our key/value pairs in an array that looks like [key, value]. 
+    # So to check if the keys are equal, you should compare key to current_array_value[0]
+    if current_array_value[0] == key:
+      self.array[array_index] = [key, value]
+      return
+
+    # Collision! 
+    number_collisions = 1
+
+    while(current_array_value[0] != key):
+      new_hash_code = self.hash(key, number_collisions)
+      new_array_index = self.compressor(new_hash_code)
+      current_array_value = self.array[new_array_index]
+      # check again after increment
+      if current_array_value is None:
+        self.array[new_array_index] = [key, value]
+        return
+
+      if current_array_value[0] == key:
+        self.array[new_array_index] = [key, value]
+        return
+
+      number_collisions += 1
+    return
+  
+  # define the getter
+  def retrieve(self, key):
+    array_index = self.compressor(self.hash(key))
+    possible_return_value = self.array[array_index]
+
+    if possible_return_value is None:
+        return None
+
+    if possible_return_value[0] == key:
+        return possible_return_value[1]
+
+    # possible_return_value holds different key
+    retrieval_collisions = 1
+
+    while (possible_return_value != key):
+      new_hash_code = self.hash(key, retrieval_collisions)
+      retrieving_array_index = self.compressor(new_hash_code)
+      possible_return_value = self.array[retrieving_array_index]
+
+      if possible_return_value is None:
+        return None
+
+      if possible_return_value[0] == key:
+        return possible_return_value[1]
+
+      retrieval_collisions += 1
+
+    return
