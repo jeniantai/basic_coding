@@ -1,5 +1,5 @@
 from linkedlist import *
-from queues_stacks_hashmaps import Queue, Stack, HashMap
+from queues_stacks_hashmaps import Queue, Stack, HashMap, HashMap_LL
 
 # TEST THE CODES
 
@@ -144,3 +144,14 @@ hash_map.assign('gneiss', 'metamorphic')
 print(hash_map.retrieve('gabbro'))
 print(hash_map.retrieve('sandstone'))
 print(hash_map.retrieve('gneiss'))
+
+
+flower_definitions = [['begonia', 'cautiousness'], ['chrysanthemum', 'cheerfulness'], ['carnation', 'memories'], 
+                      ['daisy', 'innocence'], ['hyacinth', 'playfulness'], ['lavender', 'devotion'], ['magnolia', 'dignity'], 
+                      ['morning glory', 'unrequited love'], ['periwinkle', 'new friendship'], ['poppy', 'rest'], ['rose', 'love'], 
+                      ['snapdragon', 'grace'], ['sunflower', 'longevity'], ['wisteria', 'good luck']]
+
+blossom = HashMap_LL(len(flower_definitions))
+for flower in flower_definitions:
+  blossom.assign(flower[0], flower[1])
+print(blossom.retrieve('daisy'))

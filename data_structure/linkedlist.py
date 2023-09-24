@@ -90,6 +90,27 @@ class LinkedList:
     else:
       return self.find_node_recursively(value, current_node.get_next_node())
 
+  # insert Node itself not value, at the end
+  def insert(self, new_node):
+    current_node = self.head_node
+
+    if not current_node:
+      self.head_node = new_node
+
+    while(current_node):
+      next_node = current_node.get_next_node()
+      if not next_node:
+        current_node.set_next_node(new_node)
+      current_node = next_node
+
+# without this method, 'LinkedList' object is not iterable
+  def __iter__(self):
+    current_node = self.head_node
+    while(current_node):
+      yield current_node.get_value()
+      current_node = current_node.get_next_node()
+
+
 # Function to swap nodes of a list
 def swap_nodes(input_list, val1, val2):
   print(f'Swapping {val1} with {val2}')
