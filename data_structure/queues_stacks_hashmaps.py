@@ -1,4 +1,4 @@
-from linkedlist import Node, LinkedList
+from data_structure.linkedlist import Node, LinkedList
 
 
 class Queue:
