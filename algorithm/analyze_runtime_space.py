@@ -40,7 +40,8 @@ def find_max(linked_list):
   return maximum_val
 
 import sys, os
-sys.path.append('C:/Users/Jenian/Desktop/github/basic_coding')
+parent = os.path.dirname(os.getcwd())
+sys.path.append(parent)
 from data_structure.linkedlist import LinkedList
 def sort_linked_list(linked_list):
   print("\n---------------------------")
@@ -53,4 +54,3 @@ def sort_linked_list(linked_list):
     new_linked_list.insert_beginning(current_max)
   
   return new_linked_list
-
