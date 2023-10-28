@@ -1,7 +1,7 @@
 # To depict the steps of a recursive function, we’ll use a call stack and execution contexts for each function call.
 # The call stack stores each function (with its internal variables) until those functions resolve in a last in, first out order.
 
-def sum_to_one(n):
+def sum_to_one_iter(n):
   result = 1
   call_stack = []
   # loop of recursive calls which lead to a base case.
@@ -22,19 +22,18 @@ def sum_to_one(n):
 
   return result, call_stack
 
-print(sum_to_one(4))
+
 
 
 # Now lets create a truly recusive function
-def sum_to_one(n):
+def sum_to_one_recur(n):
   if n == 1:
     return n
   # help visualize
   print("Recursing with input: {0}".format(n))
   # return argument + recursive_call(argument - 1)
-  return n + sum_to_one(n - 1)
+  return n + sum_to_one_recur(n - 1)
 
-print(sum_to_one(7))
 
 
 def factorial(n):
@@ -42,7 +41,7 @@ def factorial(n):
     return 1
   return n*factorial(n-1)
 
-print(factorial(99))
+
 
 
 def power_set(my_list):
@@ -52,15 +51,11 @@ def power_set(my_list):
     # recursive step: subsets without first element
     power_set_without_first = power_set(my_list[1:])
     # subsets with first element
-    with_first = [ [my_list[0]] + rest for rest in power_set_without_first ]
+    with_first = [[my_list[0]] + rest for rest in power_set_without_first]
     # return combination of the two
     return with_first + power_set_without_first
   
-universities = ['MIT', 'UCLA', 'Stanford', 'NYU']
-power_set_of_universities = power_set(universities)
 
-for set in power_set_of_universities:
-  print(set)
 
 def flatten(my_list):
   result = []
@@ -74,9 +69,7 @@ def flatten(my_list):
   return result
 
 
-planets = ['mercury', 'venus', ['earth'], 'mars', [['jupiter', 'saturn']], 'uranus', ['neptune', 'pluto']]
 
-print(flatten(planets))
 
 # Multiple recursive calls
 def fibonacci(n):
@@ -89,8 +82,7 @@ def fibonacci(n):
   print("Recursive call with {0} as input".format(n))
   return fibonacci(n - 1) + fibonacci(n - 2)
 
-print(fibonacci(5))
-# fibonacci_runtime = "2^N"
+
 
 # Since the problem is that we re-compute values we have already computed, 
 # we can instead choose to save the values we have already computed in a dict, 
@@ -104,6 +96,24 @@ def fibonacci2(n):
     print("Recursive call with {0} as input".format(n))
     return fibonacci2(n-1) + fibonacci2(n-2)
 
-print(fibonacci2(5))
+
 
 # construct a binary search tree
+def build_bst(my_list):
+  # base case
+  if len(my_list) == 0:
+    return 'No Child'
+  # recursive step
+  middle_idx = len(my_list)//2
+  middle_value = my_list[middle_idx]
+  # my_list.pop()
+  print('Middle index: {}'.format(middle_idx))
+  print('Middle value: {}'.format(middle_value))
+  # this tree should sprawl across all elements of the list
+  tree_node = {'data': middle_value}
+  # since data key will store the middle value, we shall exclude it in the branches
+  tree_node['right_child'] = build_bst(my_list[middle_idx+1:])
+  tree_node['left_child'] = build_bst(my_list[:middle_idx])
+  # As the recursive calls resolve and pop off the call stack, the final return value 
+  # will be the root or “top” tree_node which contains a reference to every other tree_node
+  return tree_node
