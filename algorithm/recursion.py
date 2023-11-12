@@ -35,12 +35,94 @@ def sum_to_one_recur(n):
   return n + sum_to_one_recur(n - 1)
 
 
+# Linear - O(N), where "N" is the number of digits in the number
+def sum_digits(n):
+  if n < 0:
+    ValueError("Inputs 0 or greater only!")
+  result = 0
+  while n is not 0:
+    result += n % 10
+    n = n // 10
+  return result + n
 
+# sum_digits recursively
+def sum_digits2(n):
+  if n < 0:
+    ValueError("Inputs 0 or greater only!")
+  if n <= 9:
+    return n
+  last_digit = n % 10
+  return sum_digits(n // 10) + last_digit
+
+
+# O(N)
+def find_min(my_list):
+  min = None
+  for element in my_list:
+    if not min or (element < min):
+      min = element
+  return min
+
+# find_min recursively
+def find_min2(my_list, min = None):
+  # if input is an empty list, return min
+  if not my_list:
+    return min
+  # if min is None OR first element of list is < min
+  if not min or my_list[0] < min:
+    min = my_list[0]
+  return find_min(my_list[1:], min)
+
+# Palindromes are words which read the same forward and backward.
+# In each iteration of the loop that doesn’t return False, we make a copy of the string with two fewer characters.
+# Copying a list of N elements requires N amount of work in big O >> O(N^2)
+def is_palindrome(str):
+  while len(str) > 1:
+    if str[0] != str[-1]:
+      return False
+    str = str[1:-1]
+  return True 
+
+# A more efficient version: Linear - O(N)
+def is_palindrome1(str):
+  str_length = len(str)
+  middle_index = str_length // 2
+  for index in range(0, middle_index):
+    opposite_character_index = str_length - index - 1
+    if str[index] != str[opposite_character_index]:
+      return False  
+  return True
+
+# using recursive calls
+def is_palindrome3(str):
+  if len(str) < 2:
+    return True
+  if str[0] != str[-1]:
+    return False
+  return is_palindrome(str[1:-1])
+
+
+# O(N)
 def factorial(n):
+  if n < 0:
+    ValueError('Inputs 0 or greater only.')
   if n <= 1:
     return 1
   return n*factorial(n-1)
 
+
+# lets rewrite factorial iteratively
+def factorial_iter(n):
+  if n < 0:
+    ValueError('Inputs 0 or greater only.')
+  if n <= 1:
+    return 1
+  
+  result = 1
+  while n != 1:
+     result *= n
+     n -= 1
+  return result
 
 
 
@@ -72,8 +154,11 @@ def flatten(my_list):
 
 
 # Multiple recursive calls
+# runtime: Exponential - O(2^N)
 def fibonacci(n):
   # base cases
+  if n < 0:
+    ValueError('Inputs 0 or greater only.')
   if n < 2:
     return n
   
@@ -81,6 +166,23 @@ def fibonacci(n):
   # note there are quite a bit of repeated function calls with the same input. This contributes to the expensive runtime
   print("Recursive call with {0} as input".format(n))
   return fibonacci(n - 1) + fibonacci(n - 2)
+
+# fibonacci the iterative way
+def fibonacci1(n):
+  if n < 0:
+    ValueError("Input 0 or greater only!")
+
+  fibs = [0, 1]
+  
+  if n <= len(fibs) - 1:
+    return fibs[n]
+  
+  while n > len(fibs) - 1:
+    fibs.append(fibs[-1] + fibs[-2])
+    
+  return fibs[-1]
+
+
 
 
 
@@ -91,10 +193,12 @@ def fibonacci(n):
 import functools
 @functools.lru_cache(None)
 def fibonacci2(n):
-    if n < 2:
-        return n
-    print("Recursive call with {0} as input".format(n))
-    return fibonacci2(n-1) + fibonacci2(n-2)
+  if n < 0:
+    ValueError('Inputs 0 or greater only.')
+  if n < 2:
+      return n
+  print("Recursive call with {0} as input".format(n))
+  return fibonacci2(n-1) + fibonacci2(n-2)
 
 
 

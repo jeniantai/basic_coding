@@ -4,4 +4,4 @@ This records my coding journey and things I want to keep notes to remind myself 
 
 Contents:
 - data structure (linkedlist, queue, stack, hashmap)
-- algorithm
+- algorithm (runtime & space, recursion e.g. factorial, fibonacci, flattening, binary search)
