@@ -71,7 +71,7 @@ def find_min2(my_list, min = None):
   # if min is None OR first element of list is < min
   if not min or my_list[0] < min:
     min = my_list[0]
-  return find_min(my_list[1:], min)
+  return find_min2(my_list[1:], min)
 
 # Palindromes are words which read the same forward and backward.
 # In each iteration of the loop that doesn’t return False, we make a copy of the string with two fewer characters.
@@ -101,6 +101,18 @@ def is_palindrome3(str):
     return False
   return is_palindrome(str[1:-1])
 
+# iterative 
+def multiplication(num_1, num_2):
+  result = 0
+  for count in range(0, num_2):
+    result += num_1
+  return result
+
+# recursive
+def multiplication1(num_a, num_b):
+  if num_a == 0 or num_b == 0:
+    return 0
+  return num_a + multiplication1(num_a, num_b - 1)
 
 # O(N)
 def factorial(n):
@@ -221,3 +233,39 @@ def build_bst(my_list):
   # As the recursive calls resolve and pop off the call stack, the final return value 
   # will be the root or “top” tree_node which contains a reference to every other tree_node
   return tree_node
+
+
+# find depth of tree iteratively
+# This algorithm will visit each node in the tree once, which makes it a linear runtime, O(N), 
+# where N is the number of nodes in the tree.
+def depth(tree):
+  result = 0
+  # our "queue" will store nodes at each level
+  queue = [tree]
+  # loop as long as there are nodes to explore
+  while queue:
+    # count the number of child nodes
+    level_count = len(queue)
+    for child_count in range(0, level_count):
+      # loop through each child
+      child = queue.pop(0)
+     # add its children if they exist
+      if child["left_child"]:
+        queue.append(child["left_child"])
+      if child["right_child"]:
+        queue.append(child["right_child"])
+    # count the level
+    result += 1
+  return result
+
+def depth2(tree):
+  if not tree:
+    return 0
+
+  left_depth = depth2(tree["left_child"])
+  right_depth = depth2(tree["right_child"])
+
+  if left_depth > right_depth:
+    return left_depth + 1
+  else:
+    return right_depth + 1
