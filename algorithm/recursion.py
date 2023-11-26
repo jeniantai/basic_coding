@@ -40,7 +40,7 @@ def sum_digits(n):
   if n < 0:
     ValueError("Inputs 0 or greater only!")
   result = 0
-  while n is not 0:
+  while n != 0:
     result += n % 10
     n = n // 10
   return result + n
@@ -218,7 +218,8 @@ def fibonacci2(n):
 def build_bst(my_list):
   # base case
   if len(my_list) == 0:
-    return 'No Child'
+    # return 'No Child'
+    return None
   # recursive step
   middle_idx = len(my_list)//2
   middle_value = my_list[middle_idx]
@@ -250,9 +251,9 @@ def depth(tree):
       # loop through each child
       child = queue.pop(0)
      # add its children if they exist
-      if child["left_child"]:
+      if "left_child" in child:
         queue.append(child["left_child"])
-      if child["right_child"]:
+      if "right_child" in child:
         queue.append(child["right_child"])
     # count the level
     result += 1
@@ -269,3 +270,27 @@ def depth2(tree):
     return left_depth + 1
   else:
     return right_depth + 1
+  
+
+#The algorithm begins by iterating through the text and setting a variable match_count equal to 0.
+# Then, for each index of the text, the algorithm iterates through the pattern to check for 
+# matching characters, and if found, increments match_count. Otherwise, the search breaks the 
+# pattern iteration and moves onto the next index in text.
+# Each time the pattern iteration is completed, the match_count is compared to the length of 
+# the pattern to determine if a match is found.
+def pattern_search(text, pattern):
+  print("Input Text:", text, "Input Pattern:", pattern)
+  for index in range(len(text)):
+    print("Text Index:", index)
+    match_count = 0
+    for char in range(len(pattern)):
+      print("Pattern Index:", char)
+      if pattern[char] == text[index + char]:
+        print("Matching index found")
+        print("Match Count:", match_count)
+        match_count += 1
+      # it doesn’t make sense to continue counting if a match doesn’t exist
+      else:
+        break
+    if match_count == len(pattern):
+      print(pattern, "found at index", index)

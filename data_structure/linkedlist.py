@@ -23,6 +23,14 @@ class Node:
 
   def set_prev_node(self, prev_node):
     self.prev_node = prev_node
+  
+  def flatten(self):
+    flat_lst = []
+    temp = self
+    while temp:
+      flat_lst.append(temp.value)
+      temp = temp.next_node
+    return flat_lst
 
 
 # LINKED LIST
@@ -109,6 +117,7 @@ class LinkedList:
     while(current_node):
       yield current_node.get_value()
       current_node = current_node.get_next_node()
+
 
 
 # Function to swap nodes of a list
