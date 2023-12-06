@@ -271,26 +271,3 @@ def depth2(tree):
   else:
     return right_depth + 1
   
-
-#The algorithm begins by iterating through the text and setting a variable match_count equal to 0.
-# Then, for each index of the text, the algorithm iterates through the pattern to check for 
-# matching characters, and if found, increments match_count. Otherwise, the search breaks the 
-# pattern iteration and moves onto the next index in text.
-# Each time the pattern iteration is completed, the match_count is compared to the length of 
-# the pattern to determine if a match is found.
-def pattern_search(text, pattern):
-  print("Input Text:", text, "Input Pattern:", pattern)
-  for index in range(len(text)):
-    print("Text Index:", index)
-    match_count = 0
-    for char in range(len(pattern)):
-      print("Pattern Index:", char)
-      if pattern[char] == text[index + char]:
-        print("Matching index found")
-        print("Match Count:", match_count)
-        match_count += 1
-      # it doesn’t make sense to continue counting if a match doesn’t exist
-      else:
-        break
-    if match_count == len(pattern):
-      print(pattern, "found at index", index)
