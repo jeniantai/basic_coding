@@ -1,3 +1,4 @@
+from random import randrange
 
 def swap(arr, index_1, index_2):
   temp = arr[index_1]
@@ -28,6 +29,18 @@ def bubble_sort(arr):
   return print("POST-OPTIMIZED ITERATION COUNT: {0}".format(iteration_count))
 
 
+def bubble_sort_books(arr, comparison_function):
+  swaps = 0
+  sorted = False
+  while not sorted:
+    sorted = True
+    for idx in range(len(arr) - 1):
+      if comparison_function(arr[idx], arr[idx + 1]):
+        sorted = False
+        arr[idx], arr[idx + 1] = arr[idx + 1], arr[idx]
+        swaps += 1
+  print("Bubble sort: There were {0} swaps".format(swaps))
+  return arr
 
 def merge_sort(items):
   if len(items) <= 1:
@@ -61,16 +74,74 @@ def merge(left, right):
 
   return result
 
-
+# in-place implementaion of the quicksort, no additional memory is used
 def quicksort(list, start, end):
   if start >= end:
     return list
-	# Define your pivot variables below
+  print("Running quicksort on {0}".format(list[start: end + 1]))
+	# Define your pivot variables within start and end
   pivot_idx = randrange(start, end)
   pivot_element = list[pivot_idx]
+  print("Selected pivot {0}".format(pivot_element))
   # Swap the elements in list below
   list[pivot_idx], list[end] = list[end], list[pivot_idx]
-  # Leave these lines for testing
-  print(list[start])
-  start += 1
-  return quicksort(list, start, end)
+  # Create the lesser_than_pointer
+  lesser_than_pointer = start
+  # Check if the value at idx is less than the pivot
+    # If so: 
+      # 1) swap lesser_than_pointer and idx values
+      # 2) increment lesser_than_pointer
+  for idx in range(start, end):
+    if list[idx] < pivot_element:
+      print("Swapping {0} with {1}".format(list[idx], list[lesser_than_pointer]))
+      list[idx], list[lesser_than_pointer] =  list[lesser_than_pointer], list[idx]
+      lesser_than_pointer += 1
+  # After the loop is finished...
+  # swap pivot with value at lesser_than_pointer
+  list[end], list[lesser_than_pointer] = list[lesser_than_pointer], list[end]
+  print("{0} successfully partitioned".format(list[start: end + 1]))
+  # print(list[start])
+  # start += 1
+  # return quicksort(list, start, end)
+
+  # Call quicksort on the "left" and "right" sub-lists
+  quicksort(list, start, lesser_than_pointer - 1)
+  quicksort(list, lesser_than_pointer + 1, end)
+
+# This implementation creates two new lists for each recursive call. 
+# The new lists are eventually combined into a new list with values in sorted order.
+def qs(arr):
+  if len(arr) <= 1:
+    return arr
+
+  smaller = []
+  larger = []
+  
+  pivot = 0
+  pivot_element = arr[pivot]
+  
+  for i in range(1, len(arr)):
+    if arr[i] > pivot_element:
+      larger.append(arr[i])
+    else:
+      smaller.append(arr[i])
+
+  sorted_smaller = qs(smaller)
+  sorted_larger = qs(larger)
+
+  return sorted_smaller + [pivot_element] + sorted_larger
+
+def quicksort_books(list, start, end, comparison_function):
+  if start >= end:
+    return
+  pivot_idx = randrange(start, end + 1)
+  pivot_element = list[pivot_idx]
+  list[end], list[pivot_idx] = list[pivot_idx], list[end]
+  less_than_pointer = start
+  for i in range(start, end):
+    if comparison_function(pivot_element, list[i]):
+      list[i], list[less_than_pointer] = list[less_than_pointer], list[i]
+      less_than_pointer += 1
+  list[end], list[less_than_pointer] = list[less_than_pointer], list[end]
+  quicksort_books(list, start, less_than_pointer - 1, comparison_function)
+  quicksort_books(list, less_than_pointer + 1, end, comparison_function)

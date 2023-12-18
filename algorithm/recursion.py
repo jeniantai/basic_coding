@@ -212,7 +212,77 @@ def fibonacci2(n):
   print("Recursive call with {0} as input".format(n))
   return fibonacci2(n-1) + fibonacci2(n-2)
 
+# dynamic programming - memorization
+memo = {}
+def fibonacci_mem(num):
+  if num in memo:
+    return memo[num]
+  elif num <= 1:
+    return num
+  else:
+    memo[num] = fibonacci_mem(num - 1) + fibonacci_mem(num - 2)
+  return memo[num]
 
+
+# another memorization example
+def knapsack(loot, weight_limit):
+  grid = [[0 for col in range(weight_limit + 1)] for row in range(len(loot) + 1)]
+  for row, item in enumerate(loot):
+    row = row + 1
+    for col in range(weight_limit + 1):
+      weight_capacity = col
+      if item.weight <= weight_capacity:
+        item_value = item.value        
+        item_weight = item.weight
+        previous_best_less_item_weight = grid[row - 1][weight_capacity - item_weight]
+        capacity_value_with_item = item_value + previous_best_less_item_weight
+        capacity_value_without_item = grid[row - 1][col]
+        grid[row][col] = max(capacity_value_with_item, capacity_value_without_item)
+      else:
+        grid[row][col] = grid[row - 1][col]
+   
+  return grid[-1][-1]
+
+def recursive_knapsack(weight_cap, weights, values, i):
+  if weight_cap == 0 or i == 0:
+    return 0
+  elif weights[i - 1] > weight_cap:
+    return recursive_knapsack(weight_cap, weights, values, i - 1)
+  else:
+    include_item = values[i - 1] + recursive_knapsack(weight_cap - weights[i - 1], weights, values, i - 1);
+
+    exclude_item = recursive_knapsack(weight_cap, weights, values, i - 1);
+
+    return max(include_item, exclude_item)
+
+def dynamic_knapsack(weight_cap, weights, values):
+  rows = len(weights) + 1
+  cols = weight_cap + 1
+  # Set up 2D array
+  matrix = [ [] for x in range(rows) ]
+
+  # Iterate through every row
+  for index in range(rows):
+    # Initialize columns for this row
+    matrix[index] = [ -1 for y in range(cols) ]
+
+    # Iterate through every column
+    for weight in range(cols):
+      if index == 0 or weight == 0:
+        matrix[index][weight] = 0
+      # If weight at previous row is less than or equal to current weight
+      elif weights[index - 1] <= weight:
+        # Calculate item to include
+        include_item = values[index - 1] + matrix[index - 1][weight - weights[index - 1]]
+        # Calculate item to exclude
+        exclude_item = matrix[index - 1][weight]
+        # Calculate the value of current cell
+        matrix[index][weight] = max(include_item, exclude_item)
+      else:
+        # Calculate the value of current cell
+        matrix[index][weight] = matrix[index - 1][weight]
+  # Return the value of the bottom right of matrix
+  return matrix[rows-1][weight_cap]
 
 # construct a binary search tree
 def build_bst(my_list):
