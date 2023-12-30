@@ -244,6 +244,7 @@ def knapsack(loot, weight_limit):
   return grid[-1][-1]
 
 def recursive_knapsack(weight_cap, weights, values, i):
+  # base condition
   if weight_cap == 0 or i == 0:
     return 0
   elif weights[i - 1] > weight_cap:
@@ -283,6 +284,17 @@ def dynamic_knapsack(weight_cap, weights, values):
         matrix[index][weight] = matrix[index - 1][weight]
   # Return the value of the bottom right of matrix
   return matrix[rows-1][weight_cap]
+
+
+def longest_common_subsequence(string_1, string_2):
+  print("Finding longest common subsequence of {0} and {1}".format(string_1, string_2))
+  # For the longest common subsequence, we’ll need a grid where the columns are 
+  # each character from one string, and the rows are each character from the other string. 
+  # We’ll add an extra column and row to represent an empty string or “no character”.
+  grid = [[0 for col in range(len(string_1)+1)] for row in range(len(string_2)+1)]
+  
+
+
 
 # construct a binary search tree
 def build_bst(my_list):
