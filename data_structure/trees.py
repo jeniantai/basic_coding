@@ -148,3 +148,101 @@ choice_b.add_child(choice_b_2)
 # TESTING AREA
 ######
 story_root.traverse()
+
+
+# Below is used for breadth-first search
+from collections import deque
+
+class TreeNode_breadth:
+  def __init__(self, value):
+   self.value = value
+   self.children = []
+
+  def __str__(self):
+    stack = deque()
+    stack.append([self, 0])
+    level_str = "\n"
+    while len(stack) > 0:
+      node, level = stack.pop()
+      
+      if level > 0:
+        level_str += "| "*(level-1)+ "|-"
+      level_str += str(node.value)
+      level_str += "\n"
+      level+=1
+      for child in reversed(node.children):
+        stack.append([child, level])
+
+    return level_str
+
+# Breadth-first search function
+def bfs(root_node, goal_value):
+
+  # initialize frontier queue
+  path_queue = deque()
+
+  # With deque() class, we will add elements with the .appendleft() method
+  # and remove elements with the .pop() method
+  # add root path to the frontier
+  initial_path = [root_node]
+  path_queue.appendleft(initial_path)
+  
+  # search loop that continues as long as
+  # there are paths in the frontier
+  while path_queue:
+    # get the next path and node 
+    # then output node value
+    current_path = path_queue.pop()
+    current_node = current_path[-1]
+    print(f"Searching node with value: {current_node.value}")
+
+    # check if the goal node is found
+    if current_node.value == goal_value:
+      return current_path
+
+    # add paths to children to the frontier
+    for child in current_node.children:
+      # alternative to current_path[:]
+      # new_path = current_path.copy()
+      new_path = current_path[:]
+      new_path.append(child)
+      path_queue.appendleft(new_path)
+
+  # return an empty path if goal not found
+  return None
+
+# recursive version of depth-first search
+def print_tree(root):
+  stack = deque()
+  stack.append([root, 0])
+  level_str = "\n"
+  prev_level = 0
+  level = 0
+  while len(stack) > 0:
+    prev_level = level
+    node, level = stack.pop()
+    
+    if level > 0 and len(stack) > 0 and level <= stack[-1][1]:
+      level_str += "   "*(level-1)+ "├─"
+    elif level > 0:
+      level_str += "   "*(level-1)+ "└─"
+    level_str += str(node.value)
+    level_str += "\n"
+    level+=1
+    for child in node.children:
+      stack.append([child, level])
+
+  print(level_str)
+
+  def print_path(path):
+    # If path is None, no path was found
+    if path == None:
+      print("No paths found!")
+
+    # If a path was found, print path
+    else:  
+      print("Path found:")
+      for node in path:
+        print(node.value)
+
+
