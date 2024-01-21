@@ -150,30 +150,53 @@ choice_b.add_child(choice_b_2)
 story_root.traverse()
 
 
-# Below is used for breadth-first search
+# Below is used for breadth-first search / depth-first search
 from collections import deque
 
-class TreeNode_breadth:
+class TreeNode_bd:
   def __init__(self, value):
    self.value = value
    self.children = []
 
-  def __str__(self):
-    stack = deque()
-    stack.append([self, 0])
-    level_str = "\n"
-    while len(stack) > 0:
-      node, level = stack.pop()
-      
-      if level > 0:
-        level_str += "| "*(level-1)+ "|-"
-      level_str += str(node.value)
-      level_str += "\n"
-      level+=1
-      for child in reversed(node.children):
-        stack.append([child, level])
+  def __repr__(self):
+    return self.value
 
-    return level_str
+  def add_child(self, child_node):
+    # creates parent-child relationship
+    print("Adding " + child_node.value)
+    self.children.append(child_node) 
+    
+  def remove_child(self, child_node):
+    # removes parent-child relationship
+    print("Removing " + child_node.value + " from " + self.value)
+    self.children = [child for child in self.children 
+                     if child is not child_node]
+
+  def traverse(self):
+    # moves through each node referenced from self downwards
+    nodes_to_visit = [self]
+    while len(nodes_to_visit) > 0:
+      current_node = nodes_to_visit.pop()
+      print(current_node.value)
+      nodes_to_visit += current_node.children
+
+  ## replaced by print_tree below
+  # def __str__(self):
+  #   stack = deque()
+  #   stack.append([self, 0])
+  #   level_str = "\n"
+  #   while len(stack) > 0:
+  #     node, level = stack.pop()
+      
+  #     if level > 0:
+  #       level_str += "| "*(level-1)+ "|-"
+  #     level_str += str(node.value)
+  #     level_str += "\n"
+  #     level+=1
+  #     for child in reversed(node.children):
+  #       stack.append([child, level])
+
+  #   return level_str
 
 # Breadth-first search function
 def bfs(root_node, goal_value):
@@ -245,4 +268,32 @@ def print_tree(root):
       for node in path:
         print(node.value)
 
+# recursive dfs without tracking the paths
+def dfs_wo_path(root, target):
+  if root.value == target:
+    return root
+  
+  for child in root.children:
+    node_found = dfs_wo_path(child, target)
+    if node_found != None:
+      return node_found
+  
+  return None
 
+
+# accepting path as a varialble so that we can maintain the path by passing
+# the current search path to the recursive call, and adding the current node 
+# to the end of the current path before checking for value equality.
+def dfs_w_path(root, target, path=()):
+  path = path + (root,)
+  
+  if root.value == target:
+    return path
+
+  for child in root.children:
+    node_found = dfs_w_path(child, target, path)
+
+    if node_found is not None:
+      return node_found
+
+  return None
