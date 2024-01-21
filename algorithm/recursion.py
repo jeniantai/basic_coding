@@ -321,7 +321,7 @@ def longest_common_subsequence(string_1, string_2):
   return "".join(result)
 
 
-# construct a binary search tree
+# a function to recursively build binary tree
 def build_bst(my_list):
   # base case
   if len(my_list) == 0:
@@ -378,3 +378,41 @@ def depth2(tree):
   else:
     return right_depth + 1
   
+
+# this solution reduce the sorted input list by making a smaller copy of the list.
+# this is wasteful, we can do better by using pointers instead of copying the list.
+def binary_search(sorted_list, target):
+  if not sorted_list:
+    return 'value not found'
+  mid_idx = len(sorted_list)//2
+  mid_val = sorted_list[mid_idx]
+  if mid_val == target:
+    return mid_idx
+  if mid_val > target:
+    left_half = sorted_list[:mid_idx]
+    return binary_search(left_half, target)
+  if mid_val < target:
+    right_half = sorted_list[mid_idx+1:]
+    result = binary_search(right_half, target)
+    if result == "value not found":
+      return result
+    else:
+      return result + mid_idx + 1
+    
+def binary_search_pointer(sorted_list, left_pointer, right_pointer, target):
+  # this condition indicates we've reached an empty "sub-list"
+  if left_pointer >= right_pointer:
+    return "value not found"
+
+  # We calculate the middle index from the pointers now
+  mid_idx = (left_pointer + right_pointer) // 2
+  mid_val = sorted_list[mid_idx]
+
+  if mid_val == target:
+    return mid_idx
+  if mid_val > target:
+    # we reduce the sub-list by passing in a new right_pointer
+    return binary_search_pointer(sorted_list, left_pointer, mid_idx, target)
+  if mid_val < target:
+    # we reduce the sub-list by passing in a new left_pointer
+    return binary_search_pointer(sorted_list, mid_idx + 1, right_pointer, target)
