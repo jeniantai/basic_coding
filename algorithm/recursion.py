@@ -377,8 +377,59 @@ def depth2(tree):
     return left_depth + 1
   else:
     return right_depth + 1
-  
 
+class BinarySearchTree:
+  def __init__(self, value, depth=1):
+    self.value = value
+    self.depth = depth
+    self.left = None
+    self.right = None
+    
+  # If a new value is less than the current (root) node’s value, we want to insert it to its left subtree.
+  # If the new value is less than the root node's value
+  #   If a left child node does not exist
+  #     Create a new BinarySearchTree with the new value and updated depth and assign it to the left pointer
+  #   Else
+  #     Recursively call .insert() on the left child node  
+  # Else
+  #   If a right child node does not exist
+  #     Create a new BinarySearchTree with the new value and updated depth and assign it to the right pointer
+  #   Else
+  #     Recursively call .insert() on the right child node
+  def insert(self, value):
+    if value < self.value:
+      if self.left == None:
+        self.left = BinarySearchTree(value, self.depth + 1)
+        print(f'Tree node {value} added to the left of {self.value} at depth {self.depth + 1}')
+      else:
+        self.left.insert(value)
+    else:
+      if self.right == None:
+        self.right = BinarySearchTree(value, self.depth + 1)
+        print(f'Tree node {value} added to the right of {self.value} at depth {self.depth + 1}')
+      else:
+        self.right.insert(value)
+
+  def get_node_by_value(self, value):
+    if value == self.value:
+      return self
+    elif self.left != None and value < self.value:
+      return self.left.get_node_by_value(value)
+    elif self.right != None and value >= self.value:
+      return self.right.get_node_by_value(value)
+    else:
+      return None
+
+  # this is inorder traversal
+  def depth_first_traversal(self):
+    if (self.left is not None):
+      self.left.depth_first_traversal()
+    print(f'Depth={self.depth}, Value={self.value}')
+    if (self.right is not None):
+      self.right.depth_first_traversal()
+
+      
+# recursive binary search
 # this solution reduce the sorted input list by making a smaller copy of the list.
 # this is wasteful, we can do better by using pointers instead of copying the list.
 def binary_search(sorted_list, target):
@@ -416,3 +467,22 @@ def binary_search_pointer(sorted_list, left_pointer, right_pointer, target):
   if mid_val < target:
     # we reduce the sub-list by passing in a new left_pointer
     return binary_search_pointer(sorted_list, mid_idx + 1, right_pointer, target)
+  
+# binary search the iterative way
+def binary_search_iter(sorted_list, target):
+  left_pointer = 0
+  right_pointer = len(sorted_list)
+  
+  # fill in the condition for the while loop
+  while left_pointer < right_pointer:
+    # calculate the middle index using the two pointers
+    mid_idx = (left_pointer + right_pointer)//2
+    mid_val = sorted_list[mid_idx]
+    if mid_val == target:
+      return mid_idx
+    if target < mid_val:
+      right_pointer = mid_idx
+    if target > mid_val:
+      left_pointer = mid_idx + 1
+  
+  return "Value not in list"
