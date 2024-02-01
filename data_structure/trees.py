@@ -298,14 +298,18 @@ def dfs_w_path(root, target, path=()):
 
   return None
 
-
+# Our MaxHeap must abide by two principles:
+# The element at index 1 is the maximum value in the entire list.
+# Every “child” element in the list must be smaller than their “parent”
+# The first element we add to the list will automatically be the maximum 
+# value since there are no other elements in our heap. 
 class MaxHeap:
   def __init__(self):
     self.heap_list = [None]
     self.count = 0
 
   # HEAP HELPER METHODS
-  # DO NOT CHANGE!
+  # to determine the relationship of elements with the internal list
   def parent_idx(self, idx):
     return idx // 2
 
@@ -315,15 +319,17 @@ class MaxHeap:
   def right_child_idx(self, idx):
     return idx * 2 + 1
 
-  # END OF HEAP HELPER METHODS
+  # handle adding an element to the heap via the .heap_list property.
   def add(self, element):
     self.count += 1
     print("Adding: {0} to {1}".format(element, self.heap_list))
     self.heap_list.append(element)
     self.heapify_up()
     
+  # maintaining the heap properties as we add additional elements
   def heapify_up(self):
-    print("Heapifying up")
+    print("Restoring the heap property…")
+    # idx = last index of the list
     idx = self.count
     while self.parent_idx(idx) > 0:
       child = self.heap_list[idx]
