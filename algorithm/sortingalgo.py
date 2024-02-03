@@ -145,3 +145,19 @@ def quicksort_books(list, start, end, comparison_function):
   list[end], list[less_than_pointer] = list[less_than_pointer], list[end]
   quicksort_books(list, start, less_than_pointer - 1, comparison_function)
   quicksort_books(list, less_than_pointer + 1, end, comparison_function)
+
+import sys, os
+parent = os.path.dirname(os.getcwd())
+sys.path.append(parent)
+from data_structure.trees import MaxHeap
+
+def heapsort(lst):
+  # create an empty list to store the root nodes
+  sort = []
+  max_heap = MaxHeap()
+  for idx in lst:
+    max_heap.add(idx)
+  while max_heap.count > 0:
+    max_value = max_heap.retrieve_max()
+    sort.insert(0, max_value)
+  return sort

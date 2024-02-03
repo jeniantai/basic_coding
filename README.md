@@ -5,8 +5,8 @@ This records my coding journey and things I want to keep notes to remind myself 
 Contents:
 - data structure (linkedlist, queue, stack, hashmap, tree, heap)
 - algorithm 
-    - basic search algorithms such as linear, naive pattern search, BFS, DFS, binary search
+    - basic search algorithms such as linear, naive pattern search, BFS & DFS binary search
     - recursion e.g. factorial, fibonacci, flattening etc.
-    - sorting algorithms e.g. bubble sort, merge sort, quicksort
-    - dynamic programming & memorization e,g, knapsack
+    - sorting algorithms e.g. bubble sort, merge sort, quicksort, heapsort
+    - dynamic programming & memorization e.g. knapsack
     - runtime & space

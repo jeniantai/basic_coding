@@ -55,10 +55,9 @@ class TreeNodeFull:
 # set story_node to be the user’s story choice.
 # repeat until the story is over!
       
-print('Once upon a time...')
+
 ######
-# TREENODE CLASS
-######
+# An interactive game class
 class TreeNode_game:
   def __init__(self, story_piece):
     self.story_piece = story_piece
@@ -79,75 +78,6 @@ class TreeNode_game:
       print(chosen_child.story_piece)
       story_node = chosen_child
 
-
-
-story_root = TreeNode_game("""
-You are in a forest clearing. There is a path to the left.
-A bear emerges from the trees and roars!
-Do you: 
-1 ) Roar back!
-2 ) Run to the left...
-""")
-
-user_choice = input('What is your name?')
-print(user_choice)
-######
-# VARIABLES FOR TREE
-######
-# each node is a piece of story
-choice_a = TreeNode_game("""
-The bear is startled and runs away.
-Do you:
-1 ) Shout 'Sorry bear!'
-2 ) Yell 'Hooray!'
-""")
-
-choice_b = TreeNode_game("""
-You come across a clearing full of flowers. 
-The bear follows you and asks 'what gives?'
-Do you:
-1 ) Gasp 'A talking bear!'
-2 ) Explain that the bear scared you.
-""")
-# add two choices for a middle section of story line stored inside of story_root.choices
-story_root.add_child(choice_a)
-story_root.add_child(choice_b)
-
-choice_a_1 = TreeNode_game("""
-The bear returns and tells you it's been a rough week. After making peace with
-a talking bear, he shows you the way out of the forest.
-
-YOU HAVE ESCAPED THE WILDERNESS.
-""")
-choice_a_2 = TreeNode_game("""
-The bear returns and tells you that bullying is not okay before leaving you alone
-in the wilderness.
-
-YOU REMAIN LOST.
-""")
-
-choice_b_1 = TreeNode_game("""
-The bear is unamused. After smelling the flowers, it turns around and leaves you alone.
-
-YOU REMAIN LOST.
-"""
-)
-choice_b_2 = TreeNode_game("""
-The bear understands and apologizes for startling you. Your new friend shows you a 
-path leading out of the forest.
-
-YOU HAVE ESCAPED THE WILDERNESS.
-""")
-
-choice_a.add_child(choice_a_1)
-choice_a.add_child(choice_a_2)
-choice_b.add_child(choice_b_1)
-choice_b.add_child(choice_b_2)
-
-######
-# TESTING AREA
-######
-story_root.traverse()
 
 
 # Below is used for breadth-first search / depth-first search
@@ -319,6 +249,9 @@ class MaxHeap:
   def right_child_idx(self, idx):
     return idx * 2 + 1
 
+  def child_present(self, idx):
+    return self.left_child_idx(idx) <= self.count
+  
   # handle adding an element to the heap via the .heap_list property.
   def add(self, element):
     self.count += 1
@@ -340,3 +273,45 @@ class MaxHeap:
         self.heap_list[self.parent_idx(idx)] = child
       idx = self.parent_idx(idx)
     print("Heap Restored {0}".format(self.heap_list))
+
+  def retrieve_max(self):
+    if self.count == 0:
+      print("No items in heap")
+      return None
+    max_value = self.heap_list[1]
+    print("Removing: {0} from {1}".format(max_value, self.heap_list))
+    self.heap_list[1] = self.heap_list[self.count]
+    self.count -= 1
+    self.heap_list.pop()
+    print("Last element moved to first: {0}".format(self.heap_list))    
+    self.heapify_down()
+    return max_value
+
+  def heapify_down(self):
+    idx = 1
+    while self.child_present(idx):
+      print("Heapifying down!")
+      larger_child_idx = self.get_larger_child_idx(idx)
+      child = self.heap_list[larger_child_idx]
+      parent = self.heap_list[idx]
+      if parent < child:
+        # parent swaps with the larger child
+        self.heap_list[idx] = child
+        self.heap_list[larger_child_idx] = parent
+      idx = larger_child_idx
+    print("HEAP RESTORED! {0}".format(self.heap_list))
+    print("") 
+
+  def get_larger_child_idx(self, idx):
+    if self.right_child_idx(idx) > self.count:
+      print("There is only a left child")
+      return self.left_child_idx(idx)
+    else:
+      left_child = self.heap_list[self.left_child_idx(idx)]
+      right_child = self.heap_list[self.right_child_idx(idx)]
+      if left_child > right_child:
+        print("Left child "+ str(left_child) + " is larger than right child " + str(right_child))
+        return self.left_child_idx(idx)
+      else:
+        print("Right child " + str(right_child) + " is larger than left child " + str(left_child))
+        return self.right_child_idx(idx)
