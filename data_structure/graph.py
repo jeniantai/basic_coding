@@ -1,6 +1,10 @@
 
 from random import randrange
+
 class Vertex:
+  """
+  Responsible for knowing which other vertices are connected.
+  """
   def __init__(self, value):
     self.value = value
     self.edges = {}
@@ -13,20 +17,30 @@ class Vertex:
 
 
 class Graph:
+  """
+  Track all the vertices and handle higher level concerns like whether 
+  the graph is directed, requiring edges to have a set direction, 
+  or undirected, allowing bi-directional movement across edges.
+  """
   def __init__(self, directed = False):
     self.graph_dict = {}
     self.directed = directed
 
   def add_vertex(self, vertex):
+    print(f'Adding {vertex.value}')
     self.graph_dict[vertex.value] = vertex
 
   def add_edge(self, from_vertex, to_vertex, weight = 0):
+    print(f'Adding edge from {from_vertex.value} to {to_vertex.value}')
+    # these are add_edge in Vertex as self.graph_dict[from_vertex.value] is a Vertex
     self.graph_dict[from_vertex.value].add_edge(to_vertex.value, weight)
     if not self.directed:
       self.graph_dict[to_vertex.value].add_edge(from_vertex.value, weight)
 
   def find_path(self, start_vertex, end_vertex):
+    # use this list to keep track of the vertices as we search
     start = [start_vertex]
+    # seen is a dict to track which vertices we;ve already visited
     seen = {}
     while len(start) > 0:
       current_vertex = start.pop(0)
